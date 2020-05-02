@@ -1,4 +1,4 @@
-## Mountain-OS
+## LolaOS
 When you are bored and decide making an OS
 
 # Compile it yourself
@@ -29,7 +29,7 @@ After compiling it should say something like this:
 ./comp.sh: line 15: /root/opt/cross/bin/i686-elf-ld: No such file or directory
 cp: cannot stat 'debug/kernel.elf': No such file or directory
 ```
-Don't worry! You now should have a file called `mountainos.iso`. 
+Don't worry! You now should have a file called `lolaos.iso`. 
 Feel free to do whatever you want with it.
 
 ## TODO
