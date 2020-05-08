@@ -1,11 +1,7 @@
 #include "../common.h"
 #include "../all_drivers.h"
 
-
-
 century_register = 0x32; 
- 
-
  
 int get_update_in_progress_flag() {
       outportb(cmos_address, 0x0A);

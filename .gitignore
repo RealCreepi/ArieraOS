@@ -7,10 +7,10 @@
 debug/*
 
 # Mountain OS iso
-mountainos.iso
+*.iso
 isodir/*
 
 # Miscellaneous
-serial.log
+*.log
 *.elf
 zcomp.sh

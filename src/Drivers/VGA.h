@@ -26,6 +26,9 @@
 #define VGA_WIDTH 80
 #define VGA_HEIGHT 25
 
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 600
+
 uint8_t* screen;
 size_t terminal_row;
 size_t terminal_column;
@@ -34,6 +37,8 @@ uint16_t* terminal_buffer;
 void update_cursor(uint16_t x, uint16_t y);
 uint8_t vga_entry_color(uint8_t fg, uint8_t bg);
 uint16_t vga_entry(unsigned char uc, uint8_t color);
+void putpixel(int x,int y, int color);
+void fillrect(int px, int py, int sx, int sy, int color);
 void terminal_initialize(void);
 void terminal_setcolor(uint8_t color);
 void terminal_putentryat(char c, uint8_t color, size_t x, size_t y);

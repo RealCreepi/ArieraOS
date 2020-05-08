@@ -11,7 +11,6 @@ int getBit(int8_t byteFlag, int whichBit)
         return 0;
 }
 
-
 void outportb(uint16_t port, uint8_t value)
 {
 	asm("mov dx, %0"::"r" (port) : );
@@ -85,9 +84,6 @@ int memcmp (unsigned char* str1, unsigned char* str2, size_t count)
     }
   return 0;
 }
-
-
-
 size_t strlen(const char* str)
 {
 	size_t len = 0;
@@ -160,7 +156,7 @@ char* itoa(int num, int base)
 
     str[i] = '\0'; // Append string terminator
 
-    // Reverse the string
+    // Reverse the string*
     reverse(str, i);
 
     return str;
@@ -264,16 +260,13 @@ char ktocSHIFT(uint8_t key){
     }
     return c;
 }
-char* strcat(char* dest, const char *src)
+char* strcat(char *dest, const char *src)
 {
-    size_t i,j;
-    char* d = dest;
-    for (i = 0; d[i] != '\0'; i++)
-        ;
-    for (j = 0; src[j] != '\0'; j++)
-        d[i+j] = src[j];
-    d[i+j] = '\0';
-    return d;
+    char *rdest = dest;
+    while (*dest)
+      dest++;
+    while (*dest++ = *src++);
+    return rdest;
 }
 void qemudebug(char* s){
     for (size_t i = 0; i < strlen(s); i++){

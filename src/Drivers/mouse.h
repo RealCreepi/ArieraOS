@@ -1,13 +1,15 @@
 #pragma once
+#include <stdint.h>
 #include "../common.h"
-#include "../all_drivers.h"
 
+#define MOUSE_WIDTH 5
+#define MOUSE_HEIGHT 5
 
-uint8_t mouse_cycle=0;    
-char mouse_byte[3];    
-char delta_x=0;         
-char delta_y=0;       
+uint8_t mouseCycle;
+uint8_t mouseByte[3];
+int16_t mouseX;
+int16_t mouseY;
 
-int mouse_x=0;         
-int mouse_y=0;    
-     
+uint8_t mouse_read();
+void handleMouseDown(uint8_t key);
+void handleMouseUp(uint8_t key);

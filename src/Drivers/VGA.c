@@ -1,7 +1,5 @@
 #include "../all_drivers.h"
 
-
-
 uint8_t* screen = (uint8_t*)0xA0000;
 
 void putpixel(int x,int y, int color) {
@@ -11,18 +9,13 @@ void putpixel(int x,int y, int color) {
     screen[where + 2] = (color >> 16) & 255;  // RED
 }
 
-
 void fillrect(int px, int py, int sx, int sy, int color) {
- 
     for (int i = 0; i < sy; i++) {
         for (int j = 0; j < sx; j++) {
             putpixel(j+px, i+py, color);
         }
     }
 }
-
-
-
 
 inline uint8_t vga_entry_color(uint8_t fg, uint8_t bg)
 {
@@ -33,7 +26,6 @@ inline uint16_t vga_entry(unsigned char uc, uint8_t color)
 {
 	return (uint16_t)uc | (uint16_t)color << 8;
 }
-
 
 size_t terminal_row;
 size_t terminal_column;
@@ -169,27 +161,17 @@ void print_c(const char* data, uint8_t color)
 	update_cursor(terminal_column, terminal_row);
 }
 
-void drawSprite(int px, int py, int sy, int sx, int sprite[][sx], int scale){
-    int _ = 0;
-    for(int y = 0; y<sy*scale; y++){
-        for(int x = 0; x<sx*scale; x++){
-            if (sprite[y/scale][x/scale] == -1) {_++; continue;}
-			if (sprite[y/scale][x/scale] == -2) continue;
-            putpixel(x + px - _, y + py - _, sprite[y/scale][x/scale]);
-        }
-        _ = 0;
-    }
+/*void drawChar(unsigned char c, int x, int y, int fgcolor, int bgcolor)
+{
+	int cx,cy,color;
+	unsigned char* gylph = font + (int)c*16;
+ 
+	for(cy=0;cy<16;cy++){
+		for(cx=0;cx<8;cx++){
+			if(gylph[cy] == 0) {color=fgcolor;}
+			else {color=bgcolor;}
+			putpixel(x+cx,y+cy-12,color);
+		}
+	}
 }
-
-void drawChar(int px, int py, int sprite[8][8], int color, int scale){
-    int _ = 0;
-    for(int y = 0; y<8*scale; y++){
-        for(int x = 0; x<8*scale; x++){
-            if (sprite[y/scale][x/scale] == 0) {_++; continue;}
-			if (sprite[y/scale][x/scale] == 1) continue;
-            putpixel(x + px - _, y + py - _, color);
-        }
-        _ = 0;
-    }
-}
-
+*/

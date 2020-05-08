@@ -11,7 +11,6 @@ FLAGS    equ  MBALIGN | MEMINFO
 MAGIC    equ  0x1BADB002
 CHECKSUM equ -(MAGIC + FLAGS)
 
-
 segment .text
 global _multiboot_header
 _multiboot_header:
@@ -31,6 +30,10 @@ align 4
     dd 600
     dd 24
 
+;    dd 1
+;    dd 0
+;    dd 0
+;    dd 0
 
 stublet:
     extern kernel_main

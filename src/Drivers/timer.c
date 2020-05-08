@@ -1,11 +1,20 @@
 #include "../all_drivers.h"
+#include "../all_services.h"
+
 unsigned long timer_ticks;
 extern terminal_start;
+
+bool GMode;
 
 void timer_handler(struct regs *r)
 {
     timer_ticks++;
     read_rtc();
+
+    // SWM
+    if (GMode)
+        if (timer_ticks % 55 == 0)
+            ScreenRefreshProc();
 }
 
 
@@ -23,24 +32,26 @@ unsigned long get_timer_ticks(){
 }
 
 
-void timer_install(uint32_t frequency)
+void timer_install(uint32_t frequency, bool graphicsmode)
 {
-   // Firstly, register our timer callback.
-   irq_install_handler(0, timer_handler);
+    GMode = graphicsmode;
 
-   // The value we send to the PIT is the value to divide it's input clock
-   // (1193180 Hz) by, to get our required frequency. Important to note is
-   // that the divisor must be small enough to fit into 16-bits.
-   uint32_t divisor = 1193180 / frequency;
+    // Firstly, register our timer callback.
+    irq_install_handler(0, timer_handler);
 
-   // Send the command byte.
-   outportb(0x43, 0x36);
+    // The value we send to the PIT is the value to divide it's input clock
+    // (1193180 Hz) by, to get our required frequency. Important to note is
+    // that the divisor must be small enough to fit into 16-bits.
+    uint32_t divisor = 1193180 / frequency;
 
-   // Divisor has to be sent byte-wise, so split here into upper/lower bytes.
-   uint8_t l = (uint8_t)(divisor & 0xFF);
-   uint8_t h = (uint8_t)( (divisor>>8) & 0xFF );
+    // Send the command byte.
+    outportb(0x43, 0x36);
 
-   // Send the frequency divisor.
-   outportb(0x40, l);
-   outportb(0x40, h);
+    // Divisor has to be sent byte-wise, so split here into upper/lower bytes.
+    uint8_t l = (uint8_t)(divisor & 0xFF);
+    uint8_t h = (uint8_t)( (divisor>>8) & 0xFF );
+
+    // Send the frequency divisor.
+    outportb(0x40, l);
+    outportb(0x40, h);
 }

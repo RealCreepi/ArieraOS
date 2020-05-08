@@ -1,10 +1,6 @@
 #include "../all_drivers.h"
 #include "../common.h"
 
-
-
-
-
 void keyboard_send_key(uint8_t b){
     outportb(0x64, b);
 }
@@ -85,6 +81,45 @@ char* input(){
     }
     inp[c] = '\0';
     return inp;
+}
+
+char* inputs(char* buf){
+    uint8_t key = 0;
+    int c = 0;
+    while(key != 0x1C){
+        while(!(key = keyboard_read_key())) {}
+        if(key == 0xE && c > 0){
+            buf[c--] = '\0';
+            terminal_putcharbehind('\0');
+            continue;
+        }
+        if(key == 0x2A){
+            while(true){
+                while(!(key = keyboard_read_key())) {}
+                if(key == 0xAA)
+                    break;
+                if(key == 0xE && c > 0){
+                    buf[c--] = '\0';
+                    terminal_putcharbehind('\0');
+                    continue;
+                }
+                if(ktocSHIFT(key) == 0){
+                    continue;
+                }
+                buf[c++] = ktocSHIFT(key);
+                terminal_putchar(ktocSHIFT(key));
+            }
+        }
+        if(ktoc(key) == 0){
+            continue;
+        }
+        buf[c++] = ktoc(key);
+        terminal_putchar(ktoc(key));
+
+
+    }
+    buf[c] = '\0';
+    return buf;
 }
 
 char* input_br(){
