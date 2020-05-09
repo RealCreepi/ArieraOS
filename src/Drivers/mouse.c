@@ -6,56 +6,61 @@ uint8_t mouseByte[3];
 int16_t mouseX = 256;
 int16_t mouseY = 256;
 
-void handleMouseDown(uint8_t key) {return;};
-void handleMouseUp(uint8_t key) {return;};
+bool mouseDown;
+bool mouseUp;
+
+#define STATUS_REGISTER 0x64
+#define DATA_PORT       0x60
 
 void handleMouse() {
+  mouseDown = false;
+  mouseUp = false;
 	switch(mouseCycle) {
-	case 0: {
-		mouseByte[0] = mouse_read();
-		if((mouseByte[0] & 0x08) != 0) {
-			mouseCycle++; // Only accept this as the first byte if the "must be 1" bit is set
-		}
-		//mouseCycle++;
-		break;
-	};
-	case 1: {
-		mouseByte[1] = mouse_read();
-		mouseCycle++;
-		break;
-	};
-	case 2: {
-		mouseByte[2] = mouse_read();
-		int8_t mouseXd = mouseByte[1];
-		int8_t mouseYd = mouseByte[2];
-		mouseCycle = 0;
-		mouseX += mouseXd;
-		mouseY -= mouseYd;
+    case 0: {
+      mouseDown = false; mouseUp = false;
+      mouseByte[0] = mouse_read();
+      if((mouseByte[0] & 0x08) != 0) {
+        mouseCycle++; // Only accept this as the first byte if the "must be 1" bit is set
+      }
+      break;
+    };
+    case 1: {
+      mouseByte[1] = mouse_read();
+      mouseCycle++;
+      break;
+    };
+    case 2: {
+      mouseByte[2] = mouse_read();
+      int8_t mouseXd = mouseByte[1];
+      int8_t mouseYd = mouseByte[2];
+      mouseCycle = 0;
+      mouseX += mouseXd;
+      mouseY -= mouseYd;
 
-		if ((getBit(mouseByte[0], 0) != 0) || (getBit(mouseByte[0], 1) != 0))
-      handleMouseDown(0);
-		else
-			handleMouseUp(0);
-    
-    if (mouseX > SCREEN_WIDTH)
-      mouseX = SCREEN_WIDTH - MOUSE_WIDTH;
-    else if (mouseX < 1)
-      mouseX = 1 + MOUSE_WIDTH;
+      if ((getBit(mouseByte[0], 0) != 0) || (getBit(mouseByte[0], 1) != 0))
+        mouseDown = true;
+      else
+        mouseUp = true;
+      
+      if (mouseX > SCREEN_WIDTH)
+        mouseX = SCREEN_WIDTH - MOUSE_WIDTH;
+      else if (mouseX < 1)
+        mouseX = 1 + MOUSE_WIDTH;
 
-    if (mouseY > SCREEN_HEIGHT)
-      mouseY = SCREEN_HEIGHT - MOUSE_HEIGHT;
-    else if (mouseY < 1)
-      mouseY = 1 + MOUSE_HEIGHT;
+      if (mouseY > SCREEN_HEIGHT)
+        mouseY = SCREEN_HEIGHT - MOUSE_HEIGHT;
+      else if (mouseY < 1)
+        mouseY = 1 + MOUSE_HEIGHT;
 
-		break;
-	  };
+      break;
+      };
 	}
 }
 
 uint8_t mouse_read()
 {
   mouse_wait(0);
-  return inportb(0x60);
+  return inportb(DATA_PORT);
 }
 
 inline void mouse_wait(uint8_t a_type)
@@ -65,7 +70,7 @@ inline void mouse_wait(uint8_t a_type)
   {
     while(_time_out--)
     {
-      if((inportb(0x64) & 1))
+      if((inportb(STATUS_REGISTER) & 1))
       {
         return;
       }
@@ -76,7 +81,7 @@ inline void mouse_wait(uint8_t a_type)
   {
     while(_time_out--)
     {
-      if((inportb(0x64) & 2)==0)
+      if((inportb(STATUS_REGISTER) & 2)==0)
       {
         return;
       }

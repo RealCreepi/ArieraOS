@@ -4,17 +4,37 @@
 unsigned long timer_ticks;
 extern terminal_start;
 
-bool GMode;
+// TASKS
+void (*tasks[64]) (void);
+int task_intervals[64];
 
+void task_add(void* task, int interval) {
+    for(int i; i<64; i++) {
+        if (!tasks[i]) {
+            tasks[i] = task;
+            task_intervals[i] = interval;
+            break;
+        }
+    }
+}
+
+void task_remove(int position) {
+    tasks[position] = NULL;
+    task_intervals[position] = NULL;
+}
+
+// TIMER
 void timer_handler(struct regs *r)
 {
     timer_ticks++;
     read_rtc();
 
-    // SWM
-    if (GMode)
-        if (timer_ticks % 55 == 0)
-            ScreenRefreshProc();
+    for(int i; i<64; i++) {
+        if(!(tasks[i] == NULL)) {
+            if(task_intervals[i] % 10 == 0)
+                tasks[i]();
+        }
+    }
 }
 
 
@@ -32,10 +52,8 @@ unsigned long get_timer_ticks(){
 }
 
 
-void timer_install(uint32_t frequency, bool graphicsmode)
+void timer_install(uint32_t frequency)
 {
-    GMode = graphicsmode;
-
     // Firstly, register our timer callback.
     irq_install_handler(0, timer_handler);
 

@@ -116,9 +116,8 @@ char *exception_messages[] =
 
 void fault_handler(struct regs *r)
 {
-    terminal_initialize();
-    print("error: ");
-    print(exception_messages[r->int_no]);
-    print("\nsystem halted.");
+    qemudebug("error: ");
+    qemudebug(exception_messages[r->int_no]);
+    qemudebug("\nsystem halted.");
     for(;;);
 }

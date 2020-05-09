@@ -20,10 +20,13 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic)
     __asm__ __volatile__ ("sti");
 
     isrs_install();
-    timer_install(1000, GMode);
+    timer_install(1000);
     mouse_install(); // only used to stop OS from hanging at mouse input
     initAcpi();
     
     bootbeep();
-    shell(mbi, magic, kernel_ver, kernel_type);
+    if(GMode)
+        InitSWM();
+    else
+        shell(mbi, magic, kernel_ver, kernel_type);
 }

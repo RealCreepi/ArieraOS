@@ -160,18 +160,3 @@ void print_c(const char* data, uint8_t color)
 	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
 	update_cursor(terminal_column, terminal_row);
 }
-
-/*void drawChar(unsigned char c, int x, int y, int fgcolor, int bgcolor)
-{
-	int cx,cy,color;
-	unsigned char* gylph = font + (int)c*16;
- 
-	for(cy=0;cy<16;cy++){
-		for(cx=0;cx<8;cx++){
-			if(gylph[cy] == 0) {color=fgcolor;}
-			else {color=bgcolor;}
-			putpixel(x+cx,y+cy-12,color);
-		}
-	}
-}
-*/
