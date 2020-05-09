@@ -1,7 +1,7 @@
-## ArieraOS
+# ArieraOS
 When you are bored and decide making an OS
 
-# Compile it yourself
+## Try it yourself
 First install the needed dependencies:
 ```
 sudo apt-get install xorriso
@@ -16,5 +16,4 @@ You now should have a file called `ArieraOS.iso`.
 Feel free to do whatever you want with it.
 
 ## TODO
-# Time needed
 - move to VGA pixel by pixel drawing (with text fonts and print abilities)
