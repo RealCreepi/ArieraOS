@@ -1,4 +1,4 @@
-rm -rf isodir debug a.log serial.log lolaos.iso
+rm -rf isodir debug serial.log ArieraOS.iso
 
 mkdir -p debug
 nasm -f elf32 src/boot.asm -o debug/boot.o
@@ -25,5 +25,7 @@ i686-elf-gcc -c src/etc/shell.c -o debug/shell.o -std=gnu99 -m32 -ffreestanding 
 i686-elf-ld -T src/linker.ld -o debug/kernel.elf debug/boot.o debug/irq.o debug/idt.o debug/timer.o debug/gdt.o debug/isrs.o debug/common.o debug/keyboard.o debug/VGA.o debug/sound.o debug/acpi.o debug/mouse.o debug/rtc.o debug/swm.o debug/shell.o debug/kernel.o
 
 sh makegrub.sh
-qemu-system-i386 -cdrom lolaos.iso -serial file:serial.log
+
+rm -rf isodir debug
+qemu-system-i386 -cdrom ArieraOS.iso -serial file:serial.log
 
