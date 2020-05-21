@@ -1,6 +1,6 @@
 #pragma once
 
-void InitSWM();
+void InitSWM_task();
 
 typedef struct Window_struct Window;
 Window* Window_new(unsigned int x, unsigned int y,

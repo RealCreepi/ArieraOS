@@ -4,3 +4,5 @@
 
 char* prompt;
 int prompt_color;
+
+char inp[1024];

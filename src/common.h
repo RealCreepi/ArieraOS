@@ -11,6 +11,9 @@ struct regs
     unsigned int int_no, err_code;
     unsigned int eip, cs, eflags, useresp, ss;
 };
+
+char* UIDs[1];
+
 void beep();
 int getBit(int8_t byteFlag, int whichBit);
 void outportb(uint16_t port, uint8_t value);

@@ -3,6 +3,8 @@
 #include <stdarg.h>
 #include <stddef.h>
 
+char* UIDs[1] = {"root"};
+
 int getBit(int8_t byteFlag, int whichBit)
 {
     if (whichBit > 0 && whichBit <= 8)
@@ -105,6 +107,13 @@ void swap(char *x, char *y){
     char temp = *x;
     *x = *y;
     *y = temp;
+}
+
+unsigned char reverse_bytes(unsigned char b) {
+   b = (b & 0xF0) >> 4 | (b & 0x0F) << 4;
+   b = (b & 0xCC) >> 2 | (b & 0x33) << 2;
+   b = (b & 0xAA) >> 1 | (b & 0x55) << 1;
+   return b;
 }
 
 void reverse(char str[], int length)
@@ -232,6 +241,13 @@ void strcpy(char *src, char *dest) {
     }
 }
 
+int c_ord(char c) {
+    return (int)c;
+}
+
+char c_chr(int i) {
+    return (char)i;
+}
 
 char ktoc(uint8_t key){
     char c = 0;
@@ -263,9 +279,8 @@ char ktocSHIFT(uint8_t key){
 char* strcat(char *dest, const char *src)
 {
     char *rdest = dest;
-    while (*dest)
-      dest++;
-    while (*dest++ = *src++);
+    for(int i; i<strlen(src); i++)
+        rdest[strlen(rdest)-1+i] = src[i];
     return rdest;
 }
 void qemudebug(char* s){

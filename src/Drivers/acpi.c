@@ -235,7 +235,6 @@ int initAcpi(void)
 void acpiPowerOff(void)
 {
    if (SCI_EN == 0){
-       print("\nacpi: shutdown failed.\n\n");
       return;
    }
 

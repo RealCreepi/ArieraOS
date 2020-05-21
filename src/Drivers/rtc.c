@@ -101,7 +101,7 @@ void read_rtc() {
 
 
 
-void rtc_print_formatted_time(){
+/*void rtc_print_formatted_time(){
     switch(weekday){
           case 1: print("Sunday "); break;
           case 2: print("Monday "); break;
@@ -134,4 +134,4 @@ void rtc_print_formatted_time(){
         print("0");
     }
     print(itoa(second,10));
-}
+}*/

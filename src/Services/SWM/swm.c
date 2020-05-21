@@ -41,16 +41,6 @@ Window WindowNew(int x, int y, int width, int height, int color) {
     return window;
 }*/
 
-void WindowUpdate(Window* window) {
-    if (window->update){
-        fillrect(window->lastX, window->lastY, window->lastWidth, window->lastHeight, 0xADD8E6);
-        fillrect(window->x, window->y, window->width, window->height, window->color);
-        window->update = false;
-    }
-}
-
-//MAIN//
-
 Window mouse = {
     0, 0, 0, 0,
     MOUSE_WIDTH, MOUSE_HEIGHT, MOUSE_WIDTH, MOUSE_HEIGHT,
@@ -64,6 +54,19 @@ Window panel = {
     0x2A2F3A,
     true
 };
+
+void WindowUpdate(Window* window) {
+    if (window->update){
+        fillrect(window->lastX, window->lastY, window->lastWidth, window->lastHeight, 0xADD8E6);
+        fillrect(window->x, window->y, window->width, window->height, window->color);
+        window->update = false;
+        if ((window->x > panel.x) && (window->x < panel.width) && (window->y > panel.y) && (window->y < panel.height)) {
+            panel.update = true;
+        }
+    }
+}
+
+//MAIN//
 
 void PaintDesktop(){
     /*for(int i; i<64; i++) {
@@ -91,7 +94,7 @@ void ScreenRefreshProc(){
     PaintCursor();
 }
 
-void InitSWM() {
+void InitSWM_task() {
     fillrect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0xADD8E6);
     
     /*Window panel = WindowNew(0, 0, SCREEN_WIDTH, 30, 0x2A2F3A);
